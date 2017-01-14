@@ -24,7 +24,7 @@ app.post("/events/start", (req, res, next) => {
 });
 
 app.post("/events/end", (req, res, next) => {
-  db.none("UPDATE games SET complete=true, winner=$1, end_time=$2 WHERE game_id=$3", [req.body.winner, new Date(), req.body.game_id]).then(() => res.end()).catch(next);
+  db.none("UPDATE games SET complete=true, winner=$1, end_time=$2 WHERE id=$3", [req.body.winner, new Date(), req.body.game_id]).then(() => res.end()).catch(next);
 });
 
 app.use((err, req, res, next) => {
