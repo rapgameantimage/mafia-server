@@ -1,7 +1,9 @@
 create table games (
   id varchar(36) primary key,
   complete boolean default false,
-  winner smallint
+  winner smallint,
+  start_time timestamp,
+  end_time timestamp
 );
 create table game_roles (
   id serial primary key,

@@ -14,7 +14,7 @@ const app = express();
 app.use(bodyParser.json());
 
 app.post("/events/start", (req, res, next) => {
-  db.none("INSERT INTO games (id) VALUES ($1);", [req.body.game_id]).then(() => {
+  db.none("INSERT INTO games (id, start_time) VALUES ($1, $2);", [req.body.game_id, new Date()]).then(() => {
     const promises = [];
     for (let steamid in req.body.roles) {
       promises.push(db.none("INSERT INTO game_roles (steam_id, rolename, game_id) VALUES ($1, $2, $3);", [steamid, req.body.roles[steamid], req.body.game_id]));
@@ -24,7 +24,7 @@ app.post("/events/start", (req, res, next) => {
 });
 
 app.post("/events/end", (req, res, next) => {
-  db.none("UPDATE games SET complete=true, winner=$1", [req.body.winner]).then(() => res.end()).catch(next);
+  db.none("UPDATE games SET complete=true, winner=$1, end_time=$2", [req.body.winner, new Date()]).then(() => res.end()).catch(next);
 });
 
 app.use((err, req, res, next) => {
